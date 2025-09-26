@@ -5,62 +5,111 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModbusCrcCalculator"
         mc:Ignorable="d"
-        Title="MODBUS-16 CRC" Height="350" Width="600"
+        Title="MODBUS-16 CRC" Height="250" Width="600"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid Margin="20">
+    <Grid Margin="10" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Поля ввода MODBUS параметров -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <StackPanel Margin="0,0,10,0">
-                <Label Content="Адрес устройства:" FontSize="10"/>
-                <TextBox x:Name="DeviceAddressTextBox" Text="01" Width="50" MaxLength="2" LostFocus="OnInputLostFocus"/>
-            </StackPanel>
+        <!-- Input fields in one line -->
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
 
-            <StackPanel Margin="0,0,10,0">
-                <Label Content="Команда:" FontSize="10"/>
-                <TextBox x:Name="CommandTextBox" Text="03" Width="50" MaxLength="2" LostFocus="OnInputLostFocus"/>
-            </StackPanel>
+            <Label Grid.Column="0" Content="Device:" 
+                   FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Grid.Column="1" x:Name="DeviceAddressTextBox" 
+                     Text="01" FontSize="12" Height="25" 
+                     VerticalContentAlignment="Center" Margin="0,0,10,0"
+                     LostFocus="OnInputLostFocus"/>
 
-            <StackPanel Margin="0,0,10,0">
-                <Label Content="Адрес регистра:" FontSize="10"/>
-                <TextBox x:Name="RegisterAddressTextBox" Text="00 60" Width="70" MaxLength="5" LostFocus="OnInputLostFocus"/>
-            </StackPanel>
+            <Label Grid.Column="2" Content="Cmd:" 
+                   FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Grid.Column="3" x:Name="CommandTextBox" 
+                     Text="03" FontSize="12" Height="25" 
+                     VerticalContentAlignment="Center" Margin="0,0,10,0"
+                     LostFocus="OnInputLostFocus"/>
 
-            <StackPanel>
-                <Label Content="Количество регистров:" FontSize="10"/>
-                <TextBox x:Name="RegisterCountTextBox" Text="00 06" Width="70" MaxLength="5" LostFocus="OnInputLostFocus"/>
-            </StackPanel>
-        </StackPanel>
+            <Label Grid.Column="4" Content="Reg Addr:" 
+                   FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Grid.Column="5" x:Name="RegisterAddressTextBox" 
+                     Text="00 60" FontSize="12" Height="25" 
+                     VerticalContentAlignment="Center" Margin="0,0,10,0"
+                     LostFocus="OnInputLostFocus"/>
 
-        <!-- Поле ввода hex-строки -->
-        <Label Grid.Row="2" Content="Введите hex-строку:" FontWeight="Bold"/>
-        <TextBox Grid.Row="3" x:Name="HexStringTextBox" Text="01 03 00 60 00 06" 
-                 FontFamily="Consolas" FontSize="12" LostFocus="OnInputLostFocus"/>
+            <Label Grid.Column="6" Content="Count:" 
+                   FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Grid.Column="7" x:Name="RegisterCountTextBox" 
+                     Text="00 06" FontSize="12" Height="25" 
+                     VerticalContentAlignment="Center"
+                     LostFocus="OnInputLostFocus"/>
+        </Grid>
 
-        <!-- Результат -->
-        <Label Grid.Row="5" Content="Результат:" FontWeight="Bold"/>
-        <TextBox Grid.Row="6" x:Name="ResultTextBox" IsReadOnly="True" 
-                 FontFamily="Consolas" FontSize="12" Background="LightGray"/>
+        <!-- Hex string -->
+        <Grid Grid.Row="1" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Полная строка с CRC -->
-        <Label x:Name="FullStringLabel" Grid.Row="7" Content="Нажмите для копирования полной строки" 
-               FontFamily="Consolas" FontSize="12" Foreground="Blue" Cursor="Hand" 
-               MouseLeftButtonDown="OnFullStringClick" Margin="0,5,0,0"/>
+            <Label Grid.Column="0" Content="Hex String:" 
+                   FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox Grid.Column="1" x:Name="HexStringTextBox" 
+                     Text="01 03 00 60 00 06" FontSize="12" Height="25" 
+                     VerticalContentAlignment="Center"
+                     LostFocus="OnInputLostFocus"/>
+        </Grid>
 
-        <!-- Статус уведомление -->
-        <TextBlock x:Name="StatusTextBlock" Grid.Row="8" Text="" 
-                   FontSize="10" Foreground="Green" Margin="0,5,0,0"/>
+        <!-- Result -->
+        <Grid Grid.Row="2" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Content="Result:" 
+                   FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox Grid.Column="1" x:Name="ResultTextBox" 
+                     IsReadOnly="True" FontSize="12" Height="25" 
+                     VerticalContentAlignment="Center"
+                     Background="#F5F5F5" BorderBrush="#CCCCCC"/>
+        </Grid>
+
+        <!-- Full string -->
+        <Grid Grid.Row="3" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Content="Full String:" 
+                   FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <Label Grid.Column="1" x:Name="FullStringLabel" 
+                   Content="Click to copy full string" 
+                   FontSize="12" Height="25" 
+                   VerticalContentAlignment="Center"
+                   Background="#E8F4FD" BorderBrush="#B3D9FF" 
+                   BorderThickness="1" Cursor="Hand"
+                   MouseLeftButtonUp="OnFullStringClick"/>
+        </Grid>
+
+        <!-- Status -->
+        <TextBlock Grid.Row="4" x:Name="StatusTextBlock" 
+                   FontSize="12" Foreground="Green" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,10,0,0"/>
     </Grid>
 </Window>
