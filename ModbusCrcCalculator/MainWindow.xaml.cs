@@ -53,7 +53,7 @@ namespace ModbusCrcCalculator
             CalculateCrc(); // Вычисляем CRC при запуске
         }
 
-        private void OnInputChanged(object sender, TextChangedEventArgs e)
+        private void OnInputLostFocus(object sender, RoutedEventArgs e)
         {
             // Синхронизируем поля ввода с общим полем hex-строки
             if (sender != HexStringTextBox)
@@ -106,7 +106,7 @@ namespace ModbusCrcCalculator
                 {
                     ResultTextBox.Text = "Введите hex-строку";
                     if (FullStringLabel != null)
-                        FullStringLabel.Content = "Полная строка с CRC (клик для копирования):";
+                        FullStringLabel.Content = "Нажмите для копирования полной строки";
                     return;
                 }
 
@@ -116,30 +116,21 @@ namespace ModbusCrcCalculator
                 {
                     ResultTextBox.Text = "Введите корректную hex-строку";
                     if (FullStringLabel != null)
-                        FullStringLabel.Content = "Полная строка с CRC (клик для копирования):";
+                        FullStringLabel.Content = "Нажмите для копирования полной строки";
                     return;
                 }
 
                 var crc = CalculateModbusCrc16(bytes);
-
                 // Меняем байты местами для MODBUS формата (Little Endian)
                 var swappedCrc = (ushort)((crc << 8) | (crc >> 8));
-
                 ResultTextBox.Text = $"Контрольная сумма: 0x{swappedCrc:X4}";
 
-                // Обновляем полную строку с CRC
-                var crcLowByte = (byte)(crc & 0xFF);
-                var crcHighByte = (byte)(crc >> 8);
-                var fullString = $"{hexString} {crcLowByte:X2} {crcHighByte:X2}";
-
-                if (FullStringLabel != null)
-                    FullStringLabel.Content = $"Полная строка с CRC: {fullString}";
+                // Обновляем полную строку
+                UpdateFullString(bytes, swappedCrc);
             }
             catch (Exception ex)
             {
                 ResultTextBox.Text = $"Ошибка: {ex.Message}";
-                if (FullStringLabel != null)
-                    FullStringLabel.Content = "Полная строка с CRC (клик для копирования):";
             }
         }
 
@@ -174,26 +165,55 @@ namespace ModbusCrcCalculator
             return crc;
         }
 
+        private void UpdateFullString(byte[] data, ushort crc)
+        {
+            if (FullStringLabel == null)
+                return;
+
+            var hexString = string.Join(" ", data.Select(b => b.ToString("X2")));
+            // В полной строке показываем CRC в том же порядке что и в результате (поменянные байты)
+            var crcLow = (byte)(crc & 0xFF);
+            var crcHigh = (byte)(crc >> 8);
+            var fullString = $"{hexString} {crcHigh:X2} {crcLow:X2}";
+
+            FullStringLabel.Content = $"Полная строка: {fullString}";
+        }
+
         private void OnFullStringClick(object sender, MouseButtonEventArgs e)
         {
-            if (FullStringLabel?.Content != null)
+            if (FullStringLabel?.Content == null)
+                return;
+
+            try
             {
                 var content = FullStringLabel.Content.ToString();
-                var startIndex = content.IndexOf(": ");
-                if (startIndex >= 0 && startIndex + 2 < content.Length)
-                {
-                    var fullString = content.Substring(startIndex + 2);
-                    try
-                    {
-                        Clipboard.SetText(fullString);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Ошибка копирования: {ex.Message}", "Ошибка",
-                                      MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
+                var fullString = content.Replace("Полная строка: ", "");
+
+                Clipboard.SetText(fullString);
+                ShowStatus("Строка скопирована в буфер обмена!");
             }
+            catch (Exception ex)
+            {
+                ShowStatus($"Ошибка копирования: {ex.Message}");
+            }
+        }
+
+        private void ShowStatus(string message)
+        {
+            if (StatusTextBlock == null)
+                return;
+
+            StatusTextBlock.Text = message;
+
+            // Очищаем статус через 3 секунды
+            var timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Tick += (s, e) =>
+            {
+                StatusTextBlock.Text = "";
+                timer.Stop();
+            };
+            timer.Start();
         }
     }
 }

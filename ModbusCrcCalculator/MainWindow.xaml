@@ -16,7 +16,7 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -25,29 +25,29 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <StackPanel Margin="0,0,10,0">
                 <Label Content="Адрес устройства:" FontSize="10"/>
-                <TextBox x:Name="DeviceAddressTextBox" Text="01" Width="50" MaxLength="2" TextChanged="OnInputChanged"/>
+                <TextBox x:Name="DeviceAddressTextBox" Text="01" Width="50" MaxLength="2" LostFocus="OnInputLostFocus"/>
             </StackPanel>
 
             <StackPanel Margin="0,0,10,0">
                 <Label Content="Команда:" FontSize="10"/>
-                <TextBox x:Name="CommandTextBox" Text="03" Width="50" MaxLength="2" TextChanged="OnInputChanged"/>
+                <TextBox x:Name="CommandTextBox" Text="03" Width="50" MaxLength="2" LostFocus="OnInputLostFocus"/>
             </StackPanel>
 
             <StackPanel Margin="0,0,10,0">
                 <Label Content="Адрес регистра:" FontSize="10"/>
-                <TextBox x:Name="RegisterAddressTextBox" Text="00 60" Width="70" MaxLength="5" TextChanged="OnInputChanged"/>
+                <TextBox x:Name="RegisterAddressTextBox" Text="00 60" Width="70" MaxLength="5" LostFocus="OnInputLostFocus"/>
             </StackPanel>
 
             <StackPanel>
                 <Label Content="Количество регистров:" FontSize="10"/>
-                <TextBox x:Name="RegisterCountTextBox" Text="00 06" Width="70" MaxLength="5" TextChanged="OnInputChanged"/>
+                <TextBox x:Name="RegisterCountTextBox" Text="00 06" Width="70" MaxLength="5" LostFocus="OnInputLostFocus"/>
             </StackPanel>
         </StackPanel>
 
         <!-- Поле ввода hex-строки -->
         <Label Grid.Row="2" Content="Введите hex-строку:" FontWeight="Bold"/>
         <TextBox Grid.Row="3" x:Name="HexStringTextBox" Text="01 03 00 60 00 06" 
-                 FontFamily="Consolas" FontSize="12" TextChanged="OnInputChanged"/>
+                 FontFamily="Consolas" FontSize="12" LostFocus="OnInputLostFocus"/>
 
         <!-- Результат -->
         <Label Grid.Row="5" Content="Результат:" FontWeight="Bold"/>
@@ -55,9 +55,12 @@
                  FontFamily="Consolas" FontSize="12" Background="LightGray"/>
 
         <!-- Полная строка с CRC -->
-        <Label Grid.Row="8" x:Name="FullStringLabel" Content="Полная строка с CRC (клик для копирования):" 
-               FontFamily="Consolas" FontSize="12" Background="LightBlue" 
-               Padding="5" Cursor="Hand" MouseLeftButtonUp="OnFullStringClick"
-               ToolTip="Нажмите для копирования в буфер обмена"/>
+        <Label x:Name="FullStringLabel" Grid.Row="7" Content="Нажмите для копирования полной строки" 
+               FontFamily="Consolas" FontSize="12" Foreground="Blue" Cursor="Hand" 
+               MouseLeftButtonDown="OnFullStringClick" Margin="0,5,0,0"/>
+
+        <!-- Статус уведомление -->
+        <TextBlock x:Name="StatusTextBlock" Grid.Row="8" Text="" 
+                   FontSize="10" Foreground="Green" Margin="0,5,0,0"/>
     </Grid>
 </Window>
