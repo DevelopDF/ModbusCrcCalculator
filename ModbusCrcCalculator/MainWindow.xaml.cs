@@ -125,7 +125,7 @@ namespace ModbusCrcCalculator
                 var crc = CalculateModbusCrc16(bytes);
                 // Меняем байты местами для MODBUS формата (Little Endian)
                 var swappedCrc = (ushort)((crc << 8) | (crc >> 8));
-                ResultTextBox.Text = $"CRC: 0x{swappedCrc:X4}";
+                ResultTextBox.Text = $"0x{swappedCrc:X4}";
 
                 // Обновляем полную строку
                 UpdateFullString(bytes, swappedCrc);
@@ -209,7 +209,7 @@ namespace ModbusCrcCalculator
 
             // Очищаем статус через 3 секунды
             var timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += (s, e) =>
             {
                 StatusTextBlock.Text = "";
