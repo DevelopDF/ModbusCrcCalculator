@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ModbusCrcCalculator"
         mc:Ignorable="d"
         Title="MODBUS-16 CRC" Height="360" Width="290"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Topmost="True">
 
     <Grid Margin="10, 5" VerticalAlignment="Center">
         <Grid.RowDefinitions>
@@ -64,13 +65,13 @@
                      LostFocus="OnInputLostFocus"/>
 
             <TextBox Grid.Column="2" x:Name="RegisterAddressTextBox" 
-                     Text="00 60" FontSize="12" Height="25" Width="70"
+                     Text="00 3C" FontSize="12" Height="25" Width="70"
                      HorizontalAlignment="Left"
                      VerticalContentAlignment="Center"
                      LostFocus="OnInputLostFocus"/>
 
             <TextBox Grid.Column="3" x:Name="RegisterCountTextBox" 
-                     Text="00 06" FontSize="12" Height="25" Width="70"
+                     Text="00 01" FontSize="12" Height="25" Width="70"
                      HorizontalAlignment="Left"
                      VerticalContentAlignment="Center"
                      LostFocus="OnInputLostFocus"/>
