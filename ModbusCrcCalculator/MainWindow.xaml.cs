@@ -10,6 +10,8 @@ namespace ModbusCrcCalculator
 {
     public partial class MainWindow : Window
     {
+        private bool isUpdatingConverter = false;
+
         // Полная таблица CRC16 для алгоритма MODBUS
         private static readonly ushort[] crc16Table = new ushort[]
         {
@@ -104,9 +106,9 @@ namespace ModbusCrcCalculator
                 var hexString = HexStringTextBox.Text;
                 if (string.IsNullOrWhiteSpace(hexString))
                 {
-                    ResultTextBox.Text = "Введите hex-строку";
+                    ResultTextBox.Text = "Input hex string";
                     if (FullStringLabel != null)
-                        FullStringLabel.Content = "Нажмите для копирования полной строки";
+                        FullStringLabel.Content = "Press to copy in clipboard";
                     return;
                 }
 
@@ -123,7 +125,7 @@ namespace ModbusCrcCalculator
                 var crc = CalculateModbusCrc16(bytes);
                 // Меняем байты местами для MODBUS формата (Little Endian)
                 var swappedCrc = (ushort)((crc << 8) | (crc >> 8));
-                ResultTextBox.Text = $"Контрольная сумма: 0x{swappedCrc:X4}";
+                ResultTextBox.Text = $"CRC: 0x{swappedCrc:X4}";
 
                 // Обновляем полную строку
                 UpdateFullString(bytes, swappedCrc);
@@ -140,7 +142,7 @@ namespace ModbusCrcCalculator
             var cleanHex = Regex.Replace(hexString, @"\s+", "");
 
             if (cleanHex.Length % 2 != 0)
-                throw new ArgumentException("Некорректная hex-строка");
+                throw new ArgumentException("Check input fields");
 
             var bytes = new byte[cleanHex.Length / 2];
             for (int i = 0; i < bytes.Length; i++)
@@ -176,7 +178,7 @@ namespace ModbusCrcCalculator
             var crcHigh = (byte)(crc >> 8);
             var fullString = $"{hexString} {crcHigh:X2} {crcLow:X2}";
 
-            FullStringLabel.Content = $"Полная строка: {fullString}";
+            FullStringLabel.Content = $"Full command: {fullString}";
         }
 
         private void OnFullStringClick(object sender, MouseButtonEventArgs e)
@@ -187,10 +189,10 @@ namespace ModbusCrcCalculator
             try
             {
                 var content = FullStringLabel.Content.ToString();
-                var fullString = content.Replace("Полная строка: ", "");
+                var fullString = content.Replace("Full command: ", "");
 
                 Clipboard.SetText(fullString);
-                ShowStatus("Строка скопирована в буфер обмена!");
+                ShowStatus("Command copied into clipboard!");
             }
             catch (Exception ex)
             {
@@ -214,6 +216,72 @@ namespace ModbusCrcCalculator
                 timer.Stop();
             };
             timer.Start();
+        }
+
+        private void OnDecimalTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isUpdatingConverter) return;
+
+            try
+            {
+                isUpdatingConverter = true;
+
+                if (string.IsNullOrWhiteSpace(DecimalTextBox.Text))
+                {
+                    HexTextBox.Text = "";
+                    return;
+                }
+
+                if (int.TryParse(DecimalTextBox.Text, out int decimalValue))
+                {
+                    HexTextBox.Text = decimalValue.ToString("X");
+                }
+                else
+                {
+                    HexTextBox.Text = "Invalid";
+                }
+            }
+            catch
+            {
+                HexTextBox.Text = "Error";
+            }
+            finally
+            {
+                isUpdatingConverter = false;
+            }
+        }
+
+        private void OnHexTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isUpdatingConverter) return;
+
+            try
+            {
+                isUpdatingConverter = true;
+
+                if (string.IsNullOrWhiteSpace(HexTextBox.Text))
+                {
+                    DecimalTextBox.Text = "";
+                    return;
+                }
+
+                if (int.TryParse(HexTextBox.Text, NumberStyles.HexNumber, null, out int hexValue))
+                {
+                    DecimalTextBox.Text = hexValue.ToString();
+                }
+                else
+                {
+                    DecimalTextBox.Text = "Invalid";
+                }
+            }
+            catch
+            {
+                DecimalTextBox.Text = "Error";
+            }
+            finally
+            {
+                isUpdatingConverter = false;
+            }
         }
     }
 }
