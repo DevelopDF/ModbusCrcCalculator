@@ -5,10 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModbusCrcCalculator"
         mc:Ignorable="d"
-        Title="MODBUS-16 CRC" Height="250" Width="600"
+        Title="MODBUS-16 CRC" Height="400" Width="350"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid Margin="10" VerticalAlignment="Center">
+
+    <Grid Margin="15" VerticalAlignment="Center">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -16,88 +21,96 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Input fields in one line -->
-        <Grid Grid.Row="0" Margin="0,0,0,15">
+        <!-- Labels for input fields -->
+        <Grid Grid.Row="0" Margin="0,0,0,5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0" Content="Device:" 
-                   FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Grid.Column="1" x:Name="DeviceAddressTextBox" 
-                     Text="01" FontSize="12" Height="25" 
-                     VerticalContentAlignment="Center" Margin="0,0,10,0"
+                   FontSize="12" HorizontalAlignment="Left"/>
+            <Label Grid.Column="1" Content="Cmd:" 
+                   FontSize="12" HorizontalAlignment="Left"/>
+            <Label Grid.Column="2" Content="Reg Addr:" 
+                   FontSize="12" HorizontalAlignment="Left"/>
+            <Label Grid.Column="3" Content="Count:" 
+                   FontSize="12" HorizontalAlignment="Left"/>
+        </Grid>
+
+        <!-- Input fields in one line -->
+        <Grid Grid.Row="1" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" x:Name="DeviceAddressTextBox" 
+                     Text="01" FontSize="12" Height="25" Width="40"
+                     HorizontalAlignment="Left"
+                     VerticalContentAlignment="Center"
                      LostFocus="OnInputLostFocus"/>
 
-            <Label Grid.Column="2" Content="Cmd:" 
-                   FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Grid.Column="3" x:Name="CommandTextBox" 
-                     Text="03" FontSize="12" Height="25" 
-                     VerticalContentAlignment="Center" Margin="0,0,10,0"
+            <TextBox Grid.Column="1" x:Name="CommandTextBox" 
+                     Text="03" FontSize="12" Height="25" Width="40"
+                     HorizontalAlignment="Left"
+                     VerticalContentAlignment="Center"
                      LostFocus="OnInputLostFocus"/>
 
-            <Label Grid.Column="4" Content="Reg Addr:" 
-                   FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Grid.Column="5" x:Name="RegisterAddressTextBox" 
-                     Text="00 60" FontSize="12" Height="25" 
-                     VerticalContentAlignment="Center" Margin="0,0,10,0"
+            <TextBox Grid.Column="2" x:Name="RegisterAddressTextBox" 
+                     Text="00 3C" FontSize="12" Height="25" Width="70"
+                     HorizontalAlignment="Left"
+                     VerticalContentAlignment="Center"
                      LostFocus="OnInputLostFocus"/>
 
-            <Label Grid.Column="6" Content="Count:" 
-                   FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Grid.Column="7" x:Name="RegisterCountTextBox" 
-                     Text="00 06" FontSize="12" Height="25" 
+            <TextBox Grid.Column="3" x:Name="RegisterCountTextBox" 
+                     Text="00 01" FontSize="12" Height="25" Width="70"
+                     HorizontalAlignment="Left"
                      VerticalContentAlignment="Center"
                      LostFocus="OnInputLostFocus"/>
         </Grid>
 
-        <!-- Hex string -->
-        <Grid Grid.Row="1" Margin="0,0,0,15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <!-- Hex string label -->
+        <Grid Grid.Row="2" Margin="0,0,0,5">
+            <Label Content="Hex String:" 
+                   FontSize="12" HorizontalAlignment="Left"/>
+        </Grid>
 
-            <Label Grid.Column="0" Content="Hex String:" 
-                   FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBox Grid.Column="1" x:Name="HexStringTextBox" 
+        <!-- Hex string input -->
+        <Grid Grid.Row="3" Margin="0,0,0,15">
+            <TextBox x:Name="HexStringTextBox" 
                      Text="01 03 00 60 00 06" FontSize="12" Height="25" 
                      VerticalContentAlignment="Center"
                      LostFocus="OnInputLostFocus"/>
         </Grid>
 
-        <!-- Result -->
-        <Grid Grid.Row="2" Margin="0,0,0,15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <!-- Result label -->
+        <Grid Grid.Row="4" Margin="0,0,0,5">
+            <Label Content="Result:" 
+                   FontSize="12" HorizontalAlignment="Left"/>
+        </Grid>
 
-            <Label Grid.Column="0" Content="Result:" 
-                   FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBox Grid.Column="1" x:Name="ResultTextBox" 
+        <!-- Result input -->
+        <Grid Grid.Row="5" Margin="0,0,0,15">
+            <TextBox x:Name="ResultTextBox" 
                      IsReadOnly="True" FontSize="12" Height="25" 
                      VerticalContentAlignment="Center"
                      Background="#F5F5F5" BorderBrush="#CCCCCC"/>
         </Grid>
 
-        <!-- Full string -->
-        <Grid Grid.Row="3" Margin="0,0,0,15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <!-- Full string label -->
+        <Grid Grid.Row="6" Margin="0,0,0,5">
+            <Label Content="Full String:" 
+                   FontSize="12" HorizontalAlignment="Left"/>
+        </Grid>
 
-            <Label Grid.Column="0" Content="Full String:" 
-                   FontSize="12" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <Label Grid.Column="1" x:Name="FullStringLabel" 
+        <!-- Full string input -->
+        <Grid Grid.Row="7" Margin="0,0,0,15">
+            <Label x:Name="FullStringLabel" 
                    Content="Click to copy full string" 
                    FontSize="12" Height="25" 
                    VerticalContentAlignment="Center"
@@ -107,7 +120,7 @@
         </Grid>
 
         <!-- Status -->
-        <TextBlock Grid.Row="4" x:Name="StatusTextBlock" 
+        <TextBlock Grid.Row="8" x:Name="StatusTextBlock" 
                    FontSize="12" Foreground="Green" 
                    HorizontalAlignment="Center" 
                    Margin="0,10,0,0"/>
