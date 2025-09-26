@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ModbusCrcCalculator"
         mc:Ignorable="d"
         Title="MODBUS-16 CRC" Height="350" Width="600"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">>
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -47,17 +47,17 @@
         <!-- Поле ввода hex-строки -->
         <Label Grid.Row="2" Content="Введите hex-строку:" FontWeight="Bold"/>
         <TextBox Grid.Row="3" x:Name="HexStringTextBox" Text="01 03 00 60 00 06" 
-             FontFamily="Consolas" FontSize="12" TextChanged="OnInputChanged"/>
+                 FontFamily="Consolas" FontSize="12" TextChanged="OnInputChanged"/>
 
         <!-- Результат -->
         <Label Grid.Row="5" Content="Результат:" FontWeight="Bold"/>
         <TextBox Grid.Row="6" x:Name="ResultTextBox" IsReadOnly="True" 
-             FontFamily="Consolas" FontSize="12" Background="LightGray"/>
+                 FontFamily="Consolas" FontSize="12" Background="LightGray"/>
 
         <!-- Полная строка с CRC -->
         <Label Grid.Row="8" x:Name="FullStringLabel" Content="Полная строка с CRC (клик для копирования):" 
-           FontFamily="Consolas" FontSize="12" Background="LightBlue" 
-           Padding="5" Cursor="Hand" MouseLeftButtonUp="OnFullStringClick"
-           ToolTip="Нажмите для копирования в буфер обмена"/>
+               FontFamily="Consolas" FontSize="12" Background="LightBlue" 
+               Padding="5" Cursor="Hand" MouseLeftButtonUp="OnFullStringClick"
+               ToolTip="Нажмите для копирования в буфер обмена"/>
     </Grid>
 </Window>
