@@ -178,7 +178,7 @@ namespace ModbusCrcCalculator
             var crcHigh = (byte)(crc >> 8);
             var fullString = $"{hexString} {crcHigh:X2} {crcLow:X2}";
 
-            FullStringLabel.Content = $"Full command: {fullString}";
+            FullStringLabel.Content = fullString;
         }
 
         private void OnFullStringClick(object sender, MouseButtonEventArgs e)

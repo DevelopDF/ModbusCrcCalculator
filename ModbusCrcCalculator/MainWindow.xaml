@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModbusCrcCalculator"
         mc:Ignorable="d"
-        Title="MODBUS-16 CRC" Height="400" Width="350"
+        Title="MODBUS-16 CRC" Height="360" Width="290"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
 
-    <Grid Margin="15" VerticalAlignment="Center">
+    <Grid Margin="10, 5" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <!-- Labels for input fields -->
-        <Grid Grid.Row="0" Margin="0,0,0,5">
+        <Grid Grid.Row="0" Margin="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
@@ -32,18 +32,18 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0" Content="Device:" 
+            <Label Grid.Column="0" Content="Device:" Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
-            <Label Grid.Column="1" Content="Cmd:" 
+            <Label Grid.Column="1" Content="Cmd:" Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
-            <Label Grid.Column="2" Content="Reg Addr:" 
+            <Label Grid.Column="2" Content="Reg Addr:" Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
-            <Label Grid.Column="3" Content="Count:" 
+            <Label Grid.Column="3" Content="Count:" Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
         </Grid>
 
         <!-- Input fields in one line -->
-        <Grid Grid.Row="1" Margin="0,0,0,15">
+        <Grid Grid.Row="1" Margin="0,0,0, 5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
@@ -77,22 +77,22 @@
         </Grid>
 
         <!-- Hex string label -->
-        <Grid Grid.Row="2" Margin="0,0,0,5">
-            <Label Content="Hex String:" 
+        <Grid Grid.Row="2" Margin="0" >
+            <Label Content="Hex String:" Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
         </Grid>
 
         <!-- Hex string input -->
-        <Grid Grid.Row="3" Margin="0,0,0,15">
+        <Grid Grid.Row="3" Margin="0,0,0,5">
             <TextBox x:Name="HexStringTextBox" 
-                     Text="01 03 00 60 00 06" FontSize="12" Height="25" 
+                     Text="01 03 00 3C 00 01" FontSize="12" Height="25" 
                      VerticalContentAlignment="Center"
                      LostFocus="OnInputLostFocus"/>
         </Grid>
 
         <!-- Result label -->
-        <Grid Grid.Row="4" Margin="0,0,0,5">
-            <Label Content="Result:" 
+        <Grid Grid.Row="4" Margin="0">
+            <Label Content="Result:"  Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
         </Grid>
 
@@ -105,8 +105,8 @@
         </Grid>
 
         <!-- Full string label -->
-        <Grid Grid.Row="6" Margin="0,0,0,5">
-            <Label Content="Full String:" 
+        <Grid Grid.Row="6" Margin="0">
+            <Label Content="Full String:"  Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
         </Grid>
 
@@ -114,7 +114,7 @@
         <Grid Grid.Row="7" Margin="0,0,0,15">
             <Label x:Name="FullStringLabel" 
                    Content="Click to copy full string" 
-                   FontSize="12" Height="25" 
+                   FontSize="12" Height="30" 
                    VerticalContentAlignment="Center"
                    Background="#E8F4FD" BorderBrush="#B3D9FF" 
                    BorderThickness="1" Cursor="Hand"
@@ -128,9 +128,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0" Content="Decimal:" 
+            <Label Grid.Column="0" Content="Decimal:"  Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
-            <Label Grid.Column="1" Content="Hex:" 
+            <Label Grid.Column="1" Content="Hex:"  Padding="0"
                    FontSize="12" HorizontalAlignment="Left"/>
         </Grid>
 
